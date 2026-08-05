@@ -1,0 +1,25 @@
+{
+  "appId": "com.tienmau.messaging",
+  "appName": "Messaging App",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "Keyboard": {
+      "resize": "none",
+      "resizeOnFullScreen": true
+    },
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "DARK"
+    },
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}

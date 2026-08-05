@@ -1,0 +1,140 @@
+/* ==========================================================
+   TABLET (<=1024px)
+========================================================== */
+
+@media (max-width:1024px) {
+
+    .sidebar {
+        width: var(--sidebar-width-tablet);
+        min-width: var(--sidebar-width-tablet);
+    }
+}
+
+/* ==========================================================
+   MOBILE (<=768px)
+========================================================== */
+
+@media (max-width:768px) {
+
+    .app {
+        display: block;
+        width: 100%;
+        height: 100dvh;
+        height: var(--app-height);
+        overflow: hidden;
+    }
+
+    /* Điều hướng 1 cột: mặc định hiện danh sách hội thoại, chỉ
+       hiện khung chat khi đã chọn 1 hội thoại (App.jsx thêm class
+       "chat-open" vào .app khi selectedUser tồn tại). Nút back
+       trong ChatHeader xoá selectedUser để quay lại danh sách. */
+
+    .main-content {
+        display: none;
+    }
+
+    .app.chat-open .sidebar {
+        display: none;
+    }
+
+    .app.chat-open .main-content {
+        display: flex;
+        animation: slide-side-in var(--duration-base) var(--ease-standard);
+    }
+
+    .chat-header-back {
+        display: flex;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar {
+        width: 100%;
+        min-width: 100%;
+        height: 100dvh;
+        height: var(--app-height);
+        border-right: none;
+    }
+
+    /* =========================
+       CHAT
+    ========================= */
+
+    .chat {
+        width: 100%;
+        height: 100dvh;
+        height: var(--app-height);
+    }
+
+    .chat-header {
+        /* .chat-header có padding-top: var(--safe-top) (message.css) để
+           chừa chỗ cho tai thỏ/thanh trạng thái — cộng thêm vào chiều
+           cao cố định ở đây, nếu không phần đệm đó sẽ ăn ngược vào
+           chat-header-main làm header bị bóp nhỏ lại thay vì đẩy xuống. */
+        height: calc(3.5rem + var(--safe-top));
+    }
+
+        .chat-header h3 {
+            font-size: 0.9375rem;
+        }
+
+        .chat-header span {
+            font-size: 0.75rem;
+        }
+
+    /* =========================
+       MESSAGE
+    ========================= */
+
+    .message-image {
+        max-width: 13.75rem;
+    }
+}
+
+/* ==========================================================
+   SMALL PHONE (<=480px)
+========================================================== */
+
+@media (max-width:480px) {
+
+    .message-image {
+        max-width: 11.25rem;
+    }
+}
+
+/* ==========================================================
+   MIN SUPPORT (<=320px) — thiết bị màn hình rất nhỏ
+========================================================== */
+
+@media (max-width:340px) {
+
+    .chat-header {
+        /* Giữ lại padding-top: var(--safe-top) đã set ở message.css —
+           dùng padding riêng từng cạnh thay vì shorthand "padding: 0 ..."
+           để không vô tình xoá phần đệm status bar/tai thỏ trên máy
+           màn hình nhỏ. */
+        padding-top: var(--safe-top);
+        padding-left: 0.625rem;
+        padding-right: 0.625rem;
+    }
+
+    .chat-header-left {
+        gap: 0.5rem;
+    }
+
+    .chat-header-actions .chat-header-action {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .message-image {
+        max-width: 9.5rem;
+    }
+
+    .file-message,
+    .message-file {
+        min-width: 10rem;
+    }
+}

@@ -1,0 +1,261 @@
+/* ==========================================================
+   MESSAGE INPUT (thanh nhập kiểu Zalo)
+========================================================== */
+
+.message-input {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5625rem 0.75rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+    /* ==========================================================
+   Ô NHẬP
+========================================================== */
+
+    .message-input input {
+        flex: 1;
+        height: 2.625rem;
+        padding: 0 1rem;
+        border: none;
+        border-radius: var(--radius-full);
+        outline: none;
+        background: var(--background);
+        font-size: 0.9063rem;
+        color: var(--text);
+        transition: box-shadow .2s;
+    }
+
+        .message-input input:focus {
+            box-shadow: 0 0 0 2px var(--primary) inset;
+        }
+
+        .message-input input::placeholder {
+            color: var(--text-light);
+        }
+
+    /* ==========================================================
+   NÚT GỬI — chỉ nhắm đúng .send-button (thay vì mọi <button> trong
+   thanh nhập) để không đè style xám-tròn của các icon chức năng
+   (sticker/menu tiện ích/ghi âm/gửi ảnh) vốn có specificity thấp hơn
+   một selector chung ".message-input button".
+========================================================== */
+
+    .message-input .send-button {
+        width: 2.625rem;
+        height: 2.625rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        border-radius: 50%;
+        background: var(--primary);
+        color: var(--surface);
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: background .2s, transform .15s;
+    }
+
+        .message-input .send-button:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+
+        .message-input .send-button:active:not(:disabled) {
+            transform: scale(.94);
+        }
+
+        .message-input .send-button:disabled {
+            background: var(--border);
+            color: var(--text-muted);
+            cursor: default;
+        }
+
+/* ==========================================================
+   KHOÁ NHẬP (chỉ trưởng/phó nhóm được nhắn, hoặc đã bị chặn)
+========================================================== */
+
+.message-input-locked {
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    text-align: center;
+    background: var(--surface-alt);
+}
+
+/* ==========================================================
+   NÚT ICON CHỨC NĂNG (nhãn dán / menu tiện ích / ghi âm / gửi
+   ảnh) — icon xám tròn kiểu Zalo, cùng 1 kiểu dáng dùng chung.
+========================================================== */
+
+.sticker-button,
+.image-button,
+.file-button,
+.voice-button {
+    width: 2.375rem;
+    height: 2.375rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-light);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background .2s, color .2s;
+}
+
+    .sticker-button:hover,
+    .image-button:hover,
+    .file-button:hover,
+    .voice-button:hover {
+        background: var(--surface-hover-alt);
+        color: var(--primary);
+    }
+
+/* ==========================================================
+   THANH TRẢ LỜI (reply-bar) — hiển thị phía trên ô nhập khi
+   đang trả lời 1 tin nhắn. Trước đây ReplyPreview.jsx dùng các
+   class này nhưng chưa có file CSS nào định nghĩa, nên thanh
+   trả lời bị hiển thị không có kiểu dáng gì (lỗi UI).
+========================================================== */
+
+.reply-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin: 0.5rem 0.75rem 0;
+    padding: 0.5rem 0.75rem;
+    background: var(--primary-soft);
+    border-left: 3px solid var(--primary);
+    border-radius: 10px;
+}
+
+.reply-bar-content {
+    flex: 1;
+    min-width: 0;
+}
+
+    .reply-bar-content small {
+        display: block;
+        font-size: 0.7188rem;
+        font-weight: 700;
+        color: var(--primary-text);
+    }
+
+    .reply-bar-content p {
+        margin: 0.125rem 0 0;
+        font-size: 0.8125rem;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+.reply-bar-cancel {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: var(--text-light);
+    cursor: pointer;
+}
+
+    .reply-bar-cancel:hover {
+        background: rgba(0, 104, 255, .12);
+        color: var(--primary);
+    }
+
+/* ==========================================================
+   XEM TRƯỚC ẢNH / FILE
+========================================================== */
+
+.image-preview,
+.file-preview {
+    margin: 0.625rem 0.75rem;
+    padding: 0.625rem;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+    .image-preview img {
+        display: block;
+        max-width: 13.75rem;
+        border-radius: 10px;
+    }
+
+/* ==========================================================
+   XEM TRƯỚC FILE
+========================================================== */
+
+.file-preview {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+/* ==========================================================
+   TIẾN TRÌNH UPLOAD
+========================================================== */
+
+.upload-progress {
+    margin: 0.625rem 0.75rem;
+}
+
+.progress-bar {
+    height: 0.25rem;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    transition: width .25s ease;
+}
+
+.progress-text {
+    margin-top: 0.25rem;
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+/* ==========================================================
+   MOBILE / 320px
+========================================================== */
+
+@media (max-width:360px) {
+
+    .message-input {
+        gap: 0.25rem;
+        padding: 0.5rem 0.5rem;
+    }
+
+    .sticker-button,
+    .image-button,
+    .file-button,
+    .voice-button {
+        width: 2.125rem;
+        height: 2.125rem;
+    }
+
+    .message-input input,
+    .message-input .send-button {
+        height: 2.375rem;
+    }
+
+    .message-input .send-button {
+        width: 2.375rem;
+    }
+}

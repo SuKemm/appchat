@@ -1,0 +1,118 @@
+/* ==========================================================
+   SKELETON LOADING (shared primitive)
+   Used by ConversationSkeleton (sidebar) and MessageSkeleton
+   (chat) while the first Firestore/RTDB snapshot is in flight,
+   instead of a blank panel or a spinner.
+========================================================== */
+
+.skeleton {
+    position: relative;
+    display: block;
+    background: var(--border-light);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, .65) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-circle {
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+@keyframes skeleton-shimmer {
+
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+
+}
+
+/* ==========================================================
+   CONVERSATION ROW SKELETON
+========================================================== */
+
+.conversation-skeleton {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    min-height: 4.5rem;
+    padding: .625rem 1.125rem;
+}
+
+.conversation-skeleton-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+/* ==========================================================
+   MESSAGE BUBBLE SKELETON
+========================================================== */
+
+.message-skeleton-row {
+    display: flex;
+    align-items: flex-end;
+    gap: .5rem;
+    margin-bottom: .625rem;
+}
+
+.message-skeleton-row.mine {
+    flex-direction: row-reverse;
+}
+
+.message-skeleton-bubble {
+    border-radius: var(--radius-lg);
+}
+
+/* ==========================================================
+   APP-SHELL SKELETON
+   Shown while useAuth() checks the session — same layout as the
+   real app (sidebar + chat header + message list) so there's no
+   blank flash and nothing jumps once auth resolves either way.
+========================================================== */
+
+.app-skeleton {
+    animation: fade-in var(--duration-fast) var(--ease-standard);
+}
+
+.skeleton-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    height: var(--header-height);
+    padding: 0 1.125rem;
+    flex-shrink: 0;
+}
+
+/* ==========================================================
+   MOTION SAFETY
+   Respect the OS-level "reduce motion" preference: keep the
+   skeleton visible as a flat placeholder instead of animating.
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .skeleton::after {
+        animation: none;
+    }
+
+}

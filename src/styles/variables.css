@@ -1,0 +1,299 @@
+:root {
+    /* ==========================================================
+       TYPOGRAPHY
+    ========================================================== */
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+
+    --text-xs: .75rem;      /* 12px */
+    --text-sm: .8125rem;    /* 13px */
+    --text-base: .875rem;   /* 14px */
+    --text-md: .9375rem;    /* 15px */
+    --text-lg: 1rem;        /* 16px */
+    --text-xl: 1.125rem;    /* 18px */
+    --text-2xl: 1.25rem;    /* 20px */
+    --text-3xl: 1.625rem;   /* 26px */
+
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+
+    --leading-tight: 1.2;
+    --leading-normal: 1.4;
+    --leading-relaxed: 1.6;
+
+    /* ==========================================================
+       SPACING SCALE (4px base unit)
+    ========================================================== */
+
+    --space-1: .25rem;   /* 4px */
+    --space-2: .5rem;    /* 8px */
+    --space-3: .75rem;   /* 12px */
+    --space-4: 1rem;     /* 16px */
+    --space-5: 1.25rem;  /* 20px */
+    --space-6: 1.5rem;   /* 24px */
+    --space-7: 1.75rem;  /* 28px */
+    --space-8: 2rem;     /* 32px */
+
+    /* ==========================================================
+       COLORS — PRIMARY (Xanh dương / Zalo blue)
+    ========================================================== */
+
+    --primary: #0068ff;
+    --primary-hover: #0058d6;
+    --primary-active: #0047b3;
+    --primary-light: #e8f1ff;   /* nền nhạt: trạng thái active/selected (hội thoại đang chọn) */
+    --primary-soft: #f2f7ff;    /* nền rất nhạt: hover nhẹ */
+    --primary-text: #0068ff;    /* chữ trên nền primary-light */
+    --primary-gradient: linear-gradient(135deg, #2e9bff, #0068ff);
+    --primary-gradient-hero: linear-gradient(135deg, #2e9bff, #0068ff 55%, #0047b3);
+
+    /* Accent trên nền tối (Group Panel) — cùng tông xanh nhưng sáng hơn để
+       tương phản tốt trên nền #1f2328/#1b1f24 */
+    --primary-on-dark: #4da3ff;
+    --primary-on-dark-hover: #2b8cff;
+    --primary-on-dark-soft: #8fc4ff;
+
+    /* Bong bóng chat kiểu Zalo: tin của mình = xanh dương nhạt (không phải
+       nền đặc màu chữ trắng), tin của người khác = trắng viền mảnh */
+    --bubble-mine-bg: #dbebff;
+    --bubble-mine-text: #0b2540;
+    --bubble-other-bg: #ffffff;
+    --bubble-other-text: #1f2937;
+    --bubble-other-border: #e7eaf0;
+
+    /* ==========================================================
+       COLORS — NEUTRAL / SURFACE
+    ========================================================== */
+
+    --background: #e8edf3;       /* nền khung chat kiểu Zalo (xám-xanh rất nhạt) */
+    --surface: #ffffff;
+    --surface-alt: #f7f9fc;      /* nền phụ, ví dụ current-user */
+    --surface-hover: #f0f4f9;    /* hover trên nền surface */
+    --surface-hover-alt: #eef2f7;/* hover trên menu / action sheet */
+    --border: #e3e7ee;
+    --border-light: #ececec;
+    --divider-strong: #eef1f5;   /* divider dày giữa các khối */
+
+    --text: #16181c;
+    --text-secondary: #40464e;
+    --text-light: #6b7280;
+    --text-muted: #8b9198;
+
+    /* Xám đậm hơn --border, dùng cho scrollbar thumb + hover đậm trên
+       nền xám nhạt (trước đây mỗi nơi tự viết #d5d9e0 riêng) */
+    --border-strong: #d5d9e0;
+
+    /* ==========================================================
+       COLORS — STATUS
+    ========================================================== */
+
+    --success: #22c55e;
+    --online: #22c55e;
+    --danger: #ff3b30;
+    --danger-hover: #e0271d;
+    --danger-bg: #fff0ef;
+    --danger-bg-strong: #ffd4d1;
+    --danger-text: #d63020;
+    --warning: #f5a623;
+    --warning-bg: #fff9e6;
+    --warning-bg-strong: #ffe6a3;
+    --warning-text: #8a6d1f;
+
+    /* ==========================================================
+       OVERLAY
+    ========================================================== */
+
+    --overlay: rgba(0, 0, 0, .4);
+    --overlay-light: rgba(0, 0, 0, .08);
+
+    /* ==========================================================
+       RADIUS
+    ========================================================== */
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-xl: 24px;
+    --radius-sheet: 16px 16px 0 0;
+    --radius-full: 999px;
+
+    /* ==========================================================
+       SHADOW
+    ========================================================== */
+
+    --shadow-sm: 0 1px 3px rgba(16, 24, 40, .08);
+    --shadow-md: 0 4px 12px rgba(16, 24, 40, .08);
+    --shadow-lg: 0 8px 24px rgba(16, 24, 40, .14);
+    --shadow-focus: 0 0 0 3px rgba(0, 104, 255, .15);
+    --shadow-primary-glow: 0 8px 20px rgba(0, 104, 255, .32);
+
+    /* ==========================================================
+       TRANSITION
+    ========================================================== */
+
+    --transition-fast: .15s ease;
+    --transition: .2s ease;
+    --transition-slow: .3s ease;
+
+    /* ==========================================================
+       MOTION — entrance animations (Fade / Slide / Scale)
+       Single set of tokens shared by every popup/panel/transition
+       in the app (modal, bottom sheet, dropdown menu, message row,
+       mobile panel switch, login card) — see animations.css for
+       the shared keyframes that consume these. Keeping duration +
+       easing centralized here is what makes the motion feel
+       "unified" instead of every component picking its own numbers.
+    ========================================================== */
+
+    --ease-standard: cubic-bezier(.4, 0, .2, 1);
+    --duration-fast: .12s;   /* dropdown / context menu pop */
+    --duration-base: .22s;   /* message row, mobile panel switch */
+    --duration-slow: .28s;   /* modal / bottom sheet */
+    --duration-hero: .45s;   /* one-off hero entrance (login card) */
+
+    /* ==========================================================
+       LAYOUT
+    ========================================================== */
+
+    --sidebar-width: 22rem;         /* 352px, kiểu Zalo desktop */
+    --sidebar-width-tablet: 17.5rem; /* 280px */
+    --header-height: 3.75rem;    /* 60px */
+    --input-height: 2.75rem;     /* 44px */
+
+    /* ==========================================================
+       AVATAR
+    ========================================================== */
+
+    --avatar-sm: 2rem;      /* 32px */
+    --avatar-md: 2.625rem;  /* 42px */
+    --avatar-lg: 3rem;      /* 48px */
+    --avatar-xl: 3.5rem;    /* 56px */
+
+    /* ==========================================================
+       Z-INDEX
+    ========================================================== */
+
+    --z-hover-toolbar: 20;
+    --z-header: 20;
+    --z-sticky: 30;
+    --z-dropdown: 50;
+    --z-modal: 100;
+    --z-menu-backdrop: 900;
+    --z-menu: 901;
+    --z-details-backdrop: 950;
+    --z-sheet: 999;
+
+    /* ==========================================================
+       BREAKPOINTS (dùng làm tham chiếu trong comment, media query
+       không thể dùng var() nên các file responsive.css / *.css
+       khai báo lại số nhưng phải khớp các mốc này)
+       - tablet:      max-width: 1024px
+       - mobile:      max-width: 768px
+       - small phone: max-width: 480px
+       - min support: 320px
+    ========================================================== */
+
+    /* ==========================================================
+       SAFE AREA (notch / Dynamic Island / gesture bar)
+    ========================================================== */
+
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+
+    /* Chiều cao bàn phím native (Capacitor), do main.jsx set qua
+       @capacitor/keyboard khi Keyboard.resize = "none". Mặc định 0px
+       trên web / khi bàn phím đóng. */
+    --keyboard-height: 0px;
+
+    /* ==========================================================
+       DYNAMIC VIEWPORT HEIGHT
+       Fallback for browsers without dvh support; --vh is set in
+       px (1% of the real visible viewport) by main.jsx so the
+       layout doesn't break when the mobile address bar / keyboard
+       shows or hides.
+    ========================================================== */
+
+    --vh: 1vh;
+    --app-height: calc(var(--vh, 1vh) * 100);
+}
+
+/* ==========================================================
+   DARK THEME
+   Ghi đè các token MÀU (không đụng typography/spacing/radius/
+   motion — những thứ này không phụ thuộc theme). Bật bằng
+   thuộc tính data-theme="dark" trên <html> (đặt bởi hook
+   useTheme, xem src/hooks/useTheme.js), nên áp dụng ngay cả
+   trước khi React mount (script inline trong index.html) —
+   không có hiệu ứng "nhấp nháy" sáng→tối khi tải trang.
+========================================================== */
+
+:root[data-theme="dark"] {
+
+    /* ---- Primary — dùng lại tông sáng hơn vốn đã có sẵn cho
+       nền tối (trước đây chỉ dùng ở Group Panel) ---- */
+    --primary: #4da3ff;
+    --primary-hover: #2b8cff;
+    --primary-active: #1f77e0;
+    --primary-light: rgba(77, 163, 255, .16);
+    --primary-soft: rgba(77, 163, 255, .08);
+    --primary-text: #7cbcff;
+    --primary-gradient: linear-gradient(135deg, #4da3ff, #1f77e0);
+    --primary-gradient-hero: linear-gradient(135deg, #6bb4ff, #2b8cff 55%, #1f77e0);
+
+    --primary-on-dark: #4da3ff;
+    --primary-on-dark-hover: #2b8cff;
+    --primary-on-dark-soft: #8fc4ff;
+
+    /* ---- Bong bóng chat ---- */
+    --bubble-mine-bg: #1c4d80;
+    --bubble-mine-text: #dceaff;
+    --bubble-other-bg: #262b33;
+    --bubble-other-text: #e5e7eb;
+    --bubble-other-border: #333941;
+
+    /* ---- Neutral / surface ---- */
+    --background: #14171c;
+    --surface: #1c2027;
+    --surface-alt: #20242b;
+    --surface-hover: #262b33;
+    --surface-hover-alt: #2a2f38;
+    --border: #2c313a;
+    --border-light: #262b33;
+    --border-strong: #3a3f47;
+    --divider-strong: #2c313a;
+
+    --text: #eceef1;
+    --text-secondary: #c3c8cf;
+    --text-light: #9aa0a8;
+    --text-muted: #767c85;
+
+    /* ---- Status ---- */
+    --success: #34d774;
+    --online: #34d774;
+    --danger: #ff5449;
+    --danger-hover: #ff6f65;
+    --danger-bg: #3a1f1f;
+    --danger-bg-strong: #52201e;
+    --danger-text: #ff8f86;
+    --warning: #f5b94f;
+    --warning-bg: #3a2f10;
+    --warning-bg-strong: #4a3a12;
+    --warning-text: #ffd685;
+
+    /* ---- Overlay ---- */
+    --overlay: rgba(0, 0, 0, .6);
+    --overlay-light: rgba(255, 255, 255, .08);
+
+    /* ---- Shadow — nền tối cần bóng đậm/tối hơn để vẫn tách lớp
+       được (bóng nhạt kiểu light theme gần như vô hình trên nền
+       tối) ---- */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, .45);
+    --shadow-md: 0 4px 14px rgba(0, 0, 0, .5);
+    --shadow-lg: 0 10px 28px rgba(0, 0, 0, .6);
+    --shadow-focus: 0 0 0 3px rgba(77, 163, 255, .25);
+    --shadow-primary-glow: 0 8px 20px rgba(77, 163, 255, .35);
+}

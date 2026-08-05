@@ -1,0 +1,30 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Ảnh: users/images/{fileName}, tối đa 5MB, chỉ nhận image/*
+    // (khớp với validateImage() trong src/services/storageService.js)
+    match /images/{fileName} {
+      allow read: if true;
+      allow write: if isSignedIn() &&
+        request.resource.size < 5 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/.*');
+    }
+
+    // File đính kèm theo từng cuộc hội thoại
+    match /files/{conversationId}/{fileName} {
+      allow read: if true;
+      allow write: if isSignedIn() &&
+        request.resource.size < 20 * 1024 * 1024;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,404 @@
+/* ==========================================================
+   HOVER TOOLBAR (quick reactions, shown on mouse hover)
+========================================================== */
+
+/* Wrapper chỉ lo việc ĐỊNH VỊ (top/bottom/left/right + bù trừ tràn
+   bằng JS — xem hook useEdgeClamp) VÀ hiệu ứng ẩn/hiện khi hover.
+   Tách riêng khỏi phần tử hiển thị bên trong để inline
+   transform: translateX(...) do JS gán vào không đụng độ với
+   transform: translateY(...) dùng để ẩn/hiện (2 transform nằm trên
+   2 phần tử khác nhau, tự cộng dồn qua việc lồng nhau thay vì phải
+   gộp chung 1 giá trị transform).
+
+   2 cụm ĐỘC LẬP với nhau (đúng kiểu Zalo — không gộp chung 1 hàng):
+   - .hover-toolbar-position   : 2 nút Trả lời / Thêm tuỳ chọn,
+     neo phía TRÊN bong bóng.
+   - .hover-reactions-position : cụm emoji thả nhanh, neo phía
+     DƯỚI bong bóng. */
+.hover-toolbar-position,
+.hover-reactions-position {
+    position: absolute;
+    z-index: var(--z-hover-toolbar);
+    opacity: 0;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition: opacity .15s ease, transform .15s ease;
+}
+
+.hover-toolbar-position {
+    top: -2.125rem;
+}
+
+.hover-reactions-position {
+    top: calc(100% + 0.375rem);
+    transform: translateY(-4px);
+}
+
+    .hover-toolbar-position.align-right,
+    .hover-reactions-position.align-right {
+        right: 0;
+    }
+
+    .hover-toolbar-position.align-left,
+    .hover-reactions-position.align-left {
+        left: 0;
+    }
+
+.message-bubble-wrap:hover .hover-toolbar-position,
+.message-bubble-wrap:hover .hover-reactions-position,
+.message-row.menu-open .hover-toolbar-position,
+.message-row.menu-open .hover-reactions-position {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Menu chuột phải (MessageMenu) mở phía dưới bong bóng, cùng phía
+   với cụm emoji — khi menu đang mở vẫn giữ cả 2 cụm hiện, để người
+   dùng thả reaction/trả lời nhanh được trong khi menu mở (2 khối
+   không đè lên nhau: cụm hành động ở trên, cụm emoji + menu ở dưới,
+   emoji luôn hiện trước phía trên vị trí menu vì mount trước). */
+.message-row.menu-open .hover-toolbar-position,
+.message-row.menu-open .hover-reactions-position {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.hover-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem; /* 6px */
+    padding: 0.25rem 0.5rem; /* 4px 8px */
+    border-radius: var(--radius-full); /* pill shape */
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 14px rgba(0,0,0,.12);
+}
+
+/* Khối riêng chứa 6 emoji thả nhanh — pill nền + viền + đổ bóng. */
+.hover-toolbar-emojis {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    padding: 0.25rem 0.3125rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,.12);
+}
+
+.hover-toolbar-emoji {
+    width: 1.875rem;
+    height: 1.875rem;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    font-size: 1.0625rem;
+    cursor: pointer;
+    transition: transform .15s ease, background .15s ease;
+}
+
+    .hover-toolbar-emoji:hover {
+        background: var(--surface-hover-alt);
+        transform: scale(1.15);
+    }
+
+    .hover-toolbar-emoji.active {
+        background: var(--primary-light);
+    }
+
+/* Nút reply/more — mỗi nút giờ là 1 vòng tròn riêng, tự có
+   nền + viền + đổ bóng (không còn dùng chung nền với nhóm emoji),
+   để tách bạch rõ ràng theo đúng kiểu Zalo. */
+.hover-toolbar-more {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+
+    .hover-toolbar-more svg {
+        width: 1rem;  /* 16px */
+        height: 1rem;
+    }
+
+    .hover-toolbar-more:hover {
+        background: var(--surface-hover-alt);
+        color: var(--text);
+    }
+
+/* ==========================================================
+   RIGHT-CLICK / "..." DROPDOWN MENU
+========================================================== */
+
+.message-menu-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-menu-backdrop);
+    background: transparent;
+}
+
+/* Wrapper định vị — xem giải thích ở .hover-toolbar-position phía
+   trên, áp dụng tương tự cho menu chuột phải. */
+.message-menu-position {
+    position: absolute;
+    top: calc(100% + 0.375rem);
+    z-index: var(--z-menu);
+}
+
+    .message-menu-position.align-right {
+        right: 0;
+    }
+
+    .message-menu-position.align-left {
+        left: 0;
+    }
+
+    /* Tin nhắn ở cuối khung chat (gần thanh nhập tin) — bật menu
+       xuống dưới sẽ tràn ra ngoài .messages. Giống Zalo: đổi mốc
+       neo sang phía trên trigger thay vì phía dưới. */
+    .message-menu-position.flip-up {
+        top: auto;
+        bottom: calc(100% + 0.375rem);
+    }
+
+.message-menu {
+    min-width: 13.75rem;
+    max-width: min(17rem, calc(100vw - 1.5rem));
+    background: var(--surface);
+    border-radius: 14px;
+    box-shadow: 0 10px 32px rgba(0,0,0,.18);
+    padding: 0.5rem;
+    animation: pop-in var(--duration-fast) var(--ease-standard);
+}
+
+.message-menu-divider {
+    height: 0.0625rem;
+    background: var(--border);
+    margin: 0.375rem 0.125rem;
+}
+
+.message-menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    border: none;
+    background: none;
+    padding: 0.5625rem 0.625rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+}
+
+    .message-menu-item:hover {
+        background: var(--surface-hover-alt);
+    }
+
+    .message-menu-item.danger {
+        color: var(--danger);
+    }
+
+/* ==========================================================
+   MESSAGE DETAILS POPOVER
+========================================================== */
+
+.message-details-backdrop {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-details-backdrop);
+}
+
+.message-details-panel {
+    width: min(20rem, 90vw);
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 1.125rem;
+    box-shadow: 0 12px 40px rgba(0,0,0,.25);
+}
+
+.message-details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+    .message-details-header h4 {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .message-details-header button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: var(--text-light);
+    }
+
+.message-details-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.4375rem 0;
+    font-size: 0.8125rem;
+    border-bottom: 1px solid var(--border);
+}
+
+    .message-details-row:last-child {
+        border-bottom: none;
+    }
+
+    .message-details-row span {
+        color: var(--text-light);
+    }
+
+/* Ghi chú: khối "PINNED MESSAGE BANNER" trước ở đây đã được gộp vào
+   header (`.chat-header-pinned`, xem message.css) ở giai đoạn tích
+   hợp header + ghim kiểu Zalo — không còn banner nổi riêng trong
+   khung tin nhắn nữa. */
+
+/* ==========================================================
+   MULTI-SELECT BAR
+========================================================== */
+
+.selection-bar {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8125rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 0.25rem;
+}
+
+.selection-bar-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.selection-bar-btn {
+    border: none;
+    background: var(--surface-hover-alt);
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.7812rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+    .selection-bar-btn.danger {
+        background: var(--danger-bg);
+        color: var(--danger);
+    }
+
+    .selection-bar-btn:disabled {
+        opacity: .55;
+        cursor: default;
+    }
+
+/* ==========================================================
+   MARKED (starred) INDICATOR
+========================================================== */
+
+.marked-status {
+    color: var(--warning);
+    font-size: 0.6875rem;
+}
+
+@media (max-width:768px) {
+
+    .hover-toolbar-position,
+    .hover-reactions-position,
+    .message-menu-position {
+        display: none;
+    }
+
+}
+
+/* ==========================================================
+   MESSAGE MENU — "Tuỳ chọn khác" submenu
+========================================================== */
+
+/* "Tuỳ chọn khác" — xổ ra thành 1 panel RIÊNG, cạnh bên trigger
+   (đúng kiểu Zalo), thay vì chèn xuống dưới làm menu chính cao thêm.
+   Mở bằng hover (có trễ mở/đóng chống nhấp nháy — xem OPEN_DELAY /
+   CLOSE_DELAY trong MessageMenu.jsx), bấm cũng toggle được để dùng
+   tốt trên touch (không có hover). */
+.message-menu-more-wrapper {
+    position: relative;
+}
+
+.message-menu-item-chevron {
+    margin-left: auto;
+    color: var(--text-light);
+    flex-shrink: 0;
+}
+
+.message-menu-item.active {
+    background: var(--surface-hover-alt);
+}
+
+.message-menu-submenu-flyout {
+    position: absolute;
+    top: -0.375rem;
+    min-width: 12rem;
+    background: var(--surface);
+    border-radius: 14px;
+    box-shadow: 0 10px 32px rgba(0,0,0,.18);
+    padding: 0.375rem;
+    z-index: 1;
+    animation: pop-in var(--duration-fast) var(--ease-standard);
+}
+
+    .message-menu-submenu-flyout.side-left {
+        right: calc(100% + 0.5rem);
+    }
+
+    .message-menu-submenu-flyout.side-right {
+        left: calc(100% + 0.5rem);
+    }
+
+/* ==========================================================
+   FORWARD MODAL
+========================================================== */
+
+.forward-preview {
+    background: var(--background, #f5f7fb);
+    border: 1px solid var(--border, #e2e5ea);
+    border-radius: 10px;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary, var(--text-light));
+    margin-bottom: 0.75rem;
+    max-height: 3.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.forward-success {
+    text-align: center;
+    color: var(--success);
+    font-weight: 600;
+    padding: 0.5rem 0 0.125rem;
+}

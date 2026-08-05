@@ -1,0 +1,138 @@
+/* ==========================================================
+   UNIFIED MOTION SYSTEM
+   ----------------------------------------------------------
+   Trước đây mỗi popup/panel tự khai báo @keyframes + thời lượng
+   riêng (message-in .22s, menuPop .12s, slideUp .25s, login-box-in
+   .45s, mobile-panel-in .22s...), vài chỗ trùng tên/định nghĩa,
+   vài chỗ thiếu hẳn `prefers-reduced-motion`. File này là nguồn
+   duy nhất cho các keyframe entrance (Fade / Slide / Scale) — các
+   file css khác chỉ tham chiếu tên + token thời lượng
+   (--duration-fast/base/slow/hero, --ease-standard) khai báo ở
+   variables.css, thay vì tự định nghĩa lại animation của riêng
+   mình. Chỉ cần sửa ở đây là toàn bộ app đổi "cảm giác" đồng nhất.
+
+   Import 1 lần ở App.jsx, sau variables.css.
+========================================================== */
+
+/* Fade — dùng cho backdrop/overlay (modal, chi tiết tin nhắn...) */
+@keyframes fade-in {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+/* Scale — dùng cho khối nổi lên giữa màn hình (modal, popover) */
+@keyframes scale-in {
+
+    from {
+        opacity: 0;
+        transform: scale(.94);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+/* Slide up (từ đáy màn hình) — bottom sheet kiểu Zalo mobile */
+@keyframes slide-up-in {
+
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+
+}
+
+/* Slide up nhẹ + fade — tin nhắn mới xuất hiện trong danh sách */
+@keyframes slide-up-fade-in {
+
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+/* Slide ngang nhẹ + fade — chuyển màn hình (sidebar ↔ khung chat) */
+@keyframes slide-side-in {
+
+    from {
+        opacity: 0;
+        transform: translateX(4%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+}
+
+/* Pop nhỏ từ trên xuống — dropdown / context menu ("...") */
+@keyframes pop-in {
+
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+/* Card hero — khối lớn xuất hiện 1 lần (login) */
+@keyframes card-in {
+
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+/* ==========================================================
+   MOTION SAFETY — tắt toàn bộ animation entrance ở trên khi
+   người dùng bật "reduce motion" ở hệ điều hành. Gộp về 1 chỗ
+   thay vì mỗi file css tự lặp lại khối media query này.
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .modal-overlay,
+    .modal,
+    .message-sheet,
+    .member-sheet,
+    .message-menu,
+    .message-row,
+    .login-box,
+    .app-skeleton,
+    .app.chat-open .main-content {
+        animation: none !important;
+    }
+
+}

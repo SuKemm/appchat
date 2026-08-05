@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+.vite/
+
+# Logs
+*.log
+firebase-debug.log
+firestore-debug.log
+
+# Environment
+.env
+.env.*
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+
+# iOS
+ios/App/build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

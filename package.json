@@ -1,0 +1,35 @@
+{
+  "name": "messaging-app-react",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev:vite": "vite",
+    "dev:emulators": "firebase emulators:start --only functions,firestore",
+    "dev": "concurrently -k -n \"EMULATOR,VITE\" -c \"yellow,blue\" \"npm run dev:emulators\" \"npm run dev:vite\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server/server.cjs",
+    "cap:sync": "cap sync android",
+    "cap:open": "cap open android"
+  },
+  "dependencies": {
+    "@capacitor/keyboard": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "firebase": "^12.16.0",
+    "lucide-react": "^0.383.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^7.6.8",
+    "@capacitor/cli": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
+    "@capacitor/ios": "^7.6.8",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^8.2.2",
+    "vite": "^5.4.11"
+  }
+}
